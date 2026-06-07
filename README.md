@@ -7,6 +7,7 @@ Z21 throttle implementation on ESP32 like a light Z21 lok maus. You might even b
  3. 5k or 10k variable resistor
  4. 3x4 keyboard
  5. 18650 single cell as power suply
+<img src="https://github.com/strofos/ThrottleESP/blob/main/Images/WhatsApp%20Image%202026-05-27%20at%206.06.45%20PM.jpeg" width="200px">
 
 # Flash the code
 Use a standard Arduino IDE to flash the code. Just make sure you have the correct board selected and install the graphic libraries from Adafruit. I used a Nokia 5110 display, PCD8544 chipset, SPI driven, so is easy to adapt it to another SPI display.  
