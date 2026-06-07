@@ -12,7 +12,7 @@ Z21 throttle implementation on ESP32 like a light Z21 lok maus. You might even b
 Use a standard Arduino IDE to flash the code. Just make sure you have the correct board selected and install the graphic libraries from Adafruit. I used a Nokia 5110 display, PCD8544 chipset, SPI driven, so is easy to adapt it to another SPI display.  
 
 # Setup the Wifi
-The wifi SSID and password are set inside the Config.h file. Just edit it and put your settings on.
+The wifi SSID and password are set inside the Config.h file. Just edit it and put your own settings.
 
 # How to make the enclosure
 After you print it on a standard 3D filament printer you need some M3 insert-threads and M3 standard screws to put it all together. See the images for more information. I test-printed them on my Anycubic Kobra S1 3D printer.
