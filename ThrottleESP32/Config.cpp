@@ -3,10 +3,7 @@
 WifiState wifiState = WIFI_IDLE;
 
 const char* ssid = "UPCD22662E";
-const char* password = "hTxwhrv3J4sc";
-
-// const char* ssid = "DIGI_Pirvu";
-// const char* password = "G4b1tz41";
+const char* password = "*****";
 
 const IPAddress z21_ip(192,168,0,111);
 const uint16_t z21_port = 21105;
