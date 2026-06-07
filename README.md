@@ -6,7 +6,7 @@ Z21 throttle implementation on ESP32 like a light Z21 lok maus. You might even b
  2. Nokia 5110 PCD8544 display module
  3. 5k or 10k variable resistor
  4. 3x4 keyboard
- 5. 18650 single as power suply
+ 5. 18650 single cell as power suply
 
 # Flash the code
 Use a standard Arduino IDE to flash the code. Just make sure you have the correct board selected and install the graphic libraries from Adafruit. I used a Nokia 5110 display, PCD8544 chipset, SPI driven, so is easy to adapt it to another SPI display.  
