@@ -15,7 +15,7 @@ Use a standard Arduino IDE to flash the code. Just make sure you have the correc
 The wifi SSID and password are set inside the Config.h file. Just edit it and put your own settings.
 
 # How to make the enclosure
-After you print it on a standard 3D filament printer you need some M3 insert-threads and M3 standard screws to put it all together. See the images for more information. I test-printed them on my Anycubic Kobra S1 3D printer.
+After you print the Top and Bottom enclosure parts on a standard 3D filament printer you need some M3 insert-threads and M3 standard screws to put it all together. See the images for more information. I test-printed them on my Anycubic Kobra S1 3D printer. The 18650 cell lid is still under design so it is missing from the current repo.
 
 # Copyright
 Fell free to download, make and share this project! A like or share of this repo will be much appreciated!
