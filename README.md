@@ -18,10 +18,10 @@ The wifi SSID and password are set inside the Config.h file. Just edit it and pu
 # TCP commands
 The IP can be found in the menu of the throttle, the default port is 5983. Here is the complete list of commands implemented on the throttle:
 
-- <loco adr="45"> -> lock the loco address to 45. change the 45 to the desired address
-- <loco adr="*">  -> unlock the loco address menu. the address can be changed
-- <lock>          -> locks the maus, all actions are suspended
-- <unlock>        -> unlocks/frees the maus; also <loco> commands can be used
+- &lt;loco adr="45"> -> lock the loco address to 45. change the 45 to the desired address
+- &lt;loco adr="*">  -> unlock the loco address menu. the address can be changed
+- &lt;lock>          -> locks the maus, all actions are suspended
+- &lt;unlock>        -> unlocks/frees the maus; also <loco> commands can be used
 
 
 # How to make the enclosure
