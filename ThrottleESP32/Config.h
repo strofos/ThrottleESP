@@ -31,6 +31,8 @@
 #define TRACK_ESTOP 3
 #define TRACK_SHORT 8 
 
+#define TCP_COMMANDS_PORT 8983
+
 enum WifiState
 {
   WIFI_IDLE,
@@ -53,6 +55,7 @@ extern const uint16_t z21_port;
 extern WiFiUDP udp;
 
 extern volatile uint8_t  trackPower;
+extern bool     throttleLocked;
 extern uint16_t locoAddr;
 extern bool     locoLocked;
 extern uint8_t  locoSpeed;

@@ -234,6 +234,7 @@ void testUI(){
 void drawUIThrottle() {
   extern volatile uint8_t trackPower;
   extern uint16_t locoAddr;
+  extern bool     locoLocked;
   extern uint8_t  locoSpeed;
   extern int8_t   locoDirection;
 
@@ -278,8 +279,10 @@ void drawUIThrottle() {
   // -------------------------
   // R4 (36..47)
   // -------------------------
-  display.setCursor(0, 40);
-  display.print("*MENU    #STOP");
+  if (!locoLocked) {
+    display.setCursor(0, 40);
+    display.print("*MENU    #STOP");
+  }
 
   drawUIFunctions();//15 e lumina
 
@@ -486,16 +489,22 @@ void onLongKeyPress(char k) {
   Serial.println(k);
 
   extern volatile uint8_t trackPower;
+  extern bool     locoLocked; 
 
   switch(uiState) {
     case UI_THROTTLE:
       if (k == '#') {
+        if (locoLocked) return;
+
         if (trackPower == TRACK_ON)
           setTrackPowerOFF();
         else
           setTrackPowerON();
+      
       }
       else if (k == '*') {
+        if (locoLocked) return;
+
         uiState = UI_MENU;
       }
       else {
@@ -508,11 +517,18 @@ void onLongKeyPress(char k) {
   }
 }
 
+
 unsigned long uiCooloff = 0;
 void drawUI() {
   // let the display refresh 1/3 seconds
   if (uiCooloff > millis()) return;
   uiCooloff = millis() + 300;
+
+  extern bool locoLocked;
+  if (locoLocked) {
+    drawUIThrottle();
+    return;
+  }
 
   switch (uiState) {
     case UI_MENU: drawUIMenu(); break;
@@ -522,4 +538,19 @@ void drawUI() {
       drawUIThrottle();
       break;
   }
+}
+
+
+void loopUILocked() {
+  if (uiCooloff > millis()) return;
+  uiCooloff = millis() + 300;
+  
+  display.clearDisplay();
+  display.setTextColor(BLACK, WHITE);
+  display.setTextSize(2);
+  display.setCursor(0, 0);
+  display.print("BLOCAT"); 
+  display.setCursor(0, 20);
+  display.print("LOCKED");
+  display.display();   
 }

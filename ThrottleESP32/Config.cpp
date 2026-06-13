@@ -11,6 +11,7 @@ const uint16_t z21_port = 21105;
 WiFiUDP udp;
 
 volatile uint8_t trackPower = TRACK_OFF; // 0 = off, 1 = on, 2 = prog, 8 = short, 
+bool     throttleLocked = false;
 
 // locomotivă DCC
 uint16_t locoAddr = 3;

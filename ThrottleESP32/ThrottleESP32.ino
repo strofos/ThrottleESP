@@ -38,17 +38,24 @@ void loop()
 {
   checkWifiConnection();
 
+  parseTCPCommands();
+
+  extern bool     throttleLocked;
+  if (throttleLocked) {
+    loopUILocked();
+    return;
+  }
+
   parseKeyPress();
 
   getZ21Commands();
-
-  parseTCPCommands();
 
   drawUI();
 
 
   // should set speed and functions
   extern uint16_t locoAddr;
+  extern bool     locoLocked;
   extern uint8_t  locoSpeed;
   extern int8_t   locoDirection;
   extern volatile bool locoFunctionsStates[10];
