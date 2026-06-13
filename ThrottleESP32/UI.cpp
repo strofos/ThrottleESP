@@ -548,9 +548,9 @@ void loopUILocked() {
   display.clearDisplay();
   display.setTextColor(BLACK, WHITE);
   display.setTextSize(2);
-  display.setCursor(0, 0);
+  display.setCursor(3, 0);
   display.print("BLOCAT"); 
-  display.setCursor(0, 20);
+  display.setCursor(3, 20);
   display.print("LOCKED");
   display.display();   
 }
