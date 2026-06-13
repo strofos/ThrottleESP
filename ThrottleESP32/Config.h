@@ -44,8 +44,8 @@ enum WifiState
 
 extern WifiState wifiState;
 
-extern const char* ssid;
-extern const char* password;
+extern char ssid[33];
+extern char password[65];
 
 extern const IPAddress z21_ip;
 extern const uint16_t z21_port;
@@ -54,6 +54,7 @@ extern WiFiUDP udp;
 
 extern volatile uint8_t  trackPower;
 extern uint16_t locoAddr;
+extern bool     locoLocked;
 extern uint8_t  locoSpeed;
 extern int8_t   locoDirection;
 extern volatile bool locoFunctionsStates[10];

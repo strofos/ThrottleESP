@@ -4,6 +4,7 @@
 #include "Z21Protocol.h"
 #include "UI.h"
 #include "ThrottleWifi.h"
+#include "TCPCommands.h"
 
 
 // ---------------- SETUP ----------------
@@ -11,7 +12,13 @@ void setup()
 {
   Serial.begin(115200);
 
+  //saveWifiConfig("MyWifi", "MyPass"); // initial wifi setup
+
+  loadWifiConfig();
+
   startWifiConnect();
+
+  setupTCPCommmands();
 
   setupUI();
 
@@ -29,14 +36,13 @@ unsigned long cmdStatusInfoCooloff = 0;
 
 void loop()
 {
-  // testUI();
-  // return;
-
-  if (!isUIUsingWifi()) checkWifiConnection();
+  checkWifiConnection();
 
   parseKeyPress();
 
   getZ21Commands();
+
+  parseTCPCommands();
 
   drawUI();
 
@@ -79,6 +85,8 @@ void loop()
   //testPowerOffOn();
   //getSystemInfo();
   //showUIKeysTest();
+  // testUI();
+  // return;
 }
 
 void testPowerOffOn() {

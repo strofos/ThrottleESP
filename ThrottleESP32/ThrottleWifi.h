@@ -3,5 +3,7 @@
 
 void startWifiConnect();
 void checkWifiConnection();
+void saveWifiConfig(const char* newSsid, const char* newPass);
+void loadWifiConfig();
 
 #endif

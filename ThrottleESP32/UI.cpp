@@ -90,6 +90,7 @@ void setupUI() {
   // contrast (ajusteaza daca e prea intunecat / luminos)
   display.setRotation(2); // rotit 180 grade
   display.setContrast(90);
+  display.invertDisplay(false);
 
   display.clearDisplay();
 
@@ -116,7 +117,7 @@ void setupUI() {
 
 bool isUIUsingWifi() {
   // the menu is taking the wifi control
-  return ((uiState == UI_WIFI_SELECT) || (uiState == UI_WIFI_PASS));
+  return false;
 }
 
 
@@ -381,6 +382,47 @@ void drawUIWifiSelect() {
   display.display();
 }
 
+
+void drawUIWifiInfo() {
+  if (wifiSelectCoolOff > millis()) return;
+  wifiSelectCoolOff = millis() + 500;
+
+  extern WifiState wifiState;
+  extern char ssid[33];
+
+  display.clearDisplay();
+  display.setTextColor(BLACK, WHITE);
+  display.setTextSize(1);
+  display.setCursor(0, 0);
+  display.print(ssid);    
+  
+  display.setCursor(0, 10);
+  if (wifiState == WIFI_CONNECTED) {
+    IPAddress ip = WiFi.localIP();
+    display.print(ip[0]);
+    display.print(".");
+    display.print(ip[1]);
+    display.print(".");
+    display.print(ip[2]);
+    display.print(".");
+    display.print(ip[3]);
+  }
+  else if (wifiState == WIFI_CONNECTING) {
+    display.print("Connecting...");
+  }
+  else if (wifiState == WIFI_RESET_1 || wifiState == WIFI_RESET_2 || wifiState == WIFI_RESET_3) {
+    display.print("Reseting...");
+  }
+  else {
+    display.print("idle/failed");
+  }
+
+  display.setCursor(0, 40);
+  display.print("* OK  # CANCEL");
+  
+  display.display();
+}
+
 int8_t keyToIndex(char k) {
   if (k >= '0' && k <= '9')
     return k - '0';
@@ -416,7 +458,7 @@ void onShortKeyPress(char k){
         uiState = UI_LOK_ADDRESS;
         tempLocoAddress = 0;
       }
-      else if (k == '2') uiState = UI_WIFI_SELECT;
+      else if (k == '2') uiState = UI_WIFI_INFO;
       else if (k == '*') uiState = UI_THROTTLE;
       break;
     case UI_LOK_ADDRESS:
@@ -475,7 +517,7 @@ void drawUI() {
   switch (uiState) {
     case UI_MENU: drawUIMenu(); break;
     case UI_LOK_ADDRESS: drawUILokAddress(); break;
-    case UI_WIFI_SELECT: drawUIWifiSelect(); break;
+    case UI_WIFI_INFO: drawUIWifiInfo(); break;
     default: //UI_THROTTLE
       drawUIThrottle();
       break;
