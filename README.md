@@ -15,6 +15,15 @@ Use a standard Arduino IDE to flash the code. Just make sure you have the correc
 # Setup the Wifi
 The wifi SSID and password are set inside the Config.h file. Just edit it and put your own settings.
 
+# TCP commands
+The IP can be found in the menu of the throttle, the default port is 5983. Here is the complete list of commands implemented on the throttle:
+
+- &lt;loco adr="45"> -> lock the loco address to 45. change the 45 to the desired address
+- &lt;loco adr="*">  -> unlock the loco address menu. the address can be changed
+- &lt;lock>          -> locks the maus, all actions are suspended
+- &lt;unlock>        -> unlocks/frees the maus; also <loco> commands can be used
+
+
 # How to make the enclosure
 After you print the Top and Bottom enclosure parts on a standard 3D filament printer you need some M3 insert-threads and M3 standard screws to put it all together. See the images for more information. I test-printed them on my Anycubic Kobra S1 3D printer. The 18650 cell lid is still under design so it is missing from the current repo.
 
