@@ -46,6 +46,8 @@ enum WifiState
 
 extern WifiState wifiState;
 
+#define AP_MODE_SSID "ESP_CFRP_Throttle"
+
 extern char ssid[33];
 extern char password[65];
 

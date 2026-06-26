@@ -5,10 +5,14 @@
 #include "Z21Protocol.h"
 #include <Adafruit_GFX.h>
 #include <Adafruit_PCD8544.h>
+#include "TCPCommands.h"
 
 // display object (software SPI)
 Adafruit_PCD8544 display(LCD_CLK, LCD_DIN, LCD_DC, LCD_CE, LCD_RST);
 uint8_t uiState = UI_THROTTLE;
+
+String APModeSSID;
+String APModePass;
 
 const char keys[4][3] = {
   {'1','2','3'},
@@ -117,7 +121,7 @@ void setupUI() {
 
 bool isUIUsingWifi() {
   // the menu is taking the wifi control
-  return false;
+  return (uiState == UI_WIFI_SETUP);
 }
 
 
@@ -326,10 +330,14 @@ void drawUIMenu() {
   display.print("1 LOK ADDRESS");
   display.setCursor(0, 10);
   display.print("2 WIFI");
+  display.setCursor(0, 20);
+  display.print("3 SET WIFI");
   display.setCursor(0, 40);
   display.print("* EXIT");
 
   display.display();
+
+  parseWifiSetupOverHTTP();
 }
 
 void drawUILokAddress() {
@@ -426,6 +434,23 @@ void drawUIWifiInfo() {
   display.display();
 }
 
+void drawUIWifiSetup(){
+  if (wifiSelectCoolOff > millis()) return;
+  wifiSelectCoolOff = millis() + 500;
+
+  display.clearDisplay();
+  display.setTextColor(BLACK, WHITE);
+  display.setTextSize(1);
+  display.setCursor(0, 0);
+  display.print(APModeSSID);    
+  display.setCursor(0, 10);
+  display.print(APModePass); 
+  display.setCursor(0, 40);
+  display.print("* OK");
+
+  display.display();
+}
+
 int8_t keyToIndex(char k) {
   if (k >= '0' && k <= '9')
     return k - '0';
@@ -462,6 +487,12 @@ void onShortKeyPress(char k){
         tempLocoAddress = 0;
       }
       else if (k == '2') uiState = UI_WIFI_INFO;
+      else if (k == '3') {
+        uiState = UI_WIFI_SETUP;
+
+        // start HTTP server, put wifi in AP MODE
+        startWifiSetupOverHTTP();
+      }
       else if (k == '*') uiState = UI_THROTTLE;
       break;
     case UI_LOK_ADDRESS:
@@ -479,6 +510,11 @@ void onShortKeyPress(char k){
         tempLocoAddress = 10 * tempLocoAddress + valueIdx;
       }
       break;
+    case UI_WIFI_SETUP:
+      if (k == '*' || k == '#') { // OK
+        // just reboot
+        ESP.restart();
+      }
     default:
       if (k == '*') uiState = UI_THROTTLE;
       break;
@@ -534,6 +570,7 @@ void drawUI() {
     case UI_MENU: drawUIMenu(); break;
     case UI_LOK_ADDRESS: drawUILokAddress(); break;
     case UI_WIFI_INFO: drawUIWifiInfo(); break;
+    case UI_WIFI_SETUP: drawUIWifiSelect(); break;
     default: //UI_THROTTLE
       drawUIThrottle();
       break;

@@ -36,11 +36,13 @@ unsigned long cmdStatusInfoCooloff = 0;
 
 void loop()
 {
-  checkWifiConnection();
+  if (!isUIUsingWifi()){
+    checkWifiConnection();
 
-  parseTCPCommands();
+    parseTCPCommands();
+  }
 
-  extern bool     throttleLocked;
+  extern bool throttleLocked;
   if (throttleLocked) {
     loopUILocked();
     return;
@@ -52,6 +54,7 @@ void loop()
 
   drawUI();
 
+  if (isUIUsingWifi()) return;
 
   // should set speed and functions
   extern uint16_t locoAddr;

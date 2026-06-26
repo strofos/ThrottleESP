@@ -107,3 +107,15 @@ void parseTCPLocoAddress(){
 
   tcpBuffer = "";
 }
+
+
+void startWifiSetupOverHTTP(){
+  // close the TCP server
+  // stop the wifi
+  // start the wifi in AP MODE
+  // handle POST parameters
+}
+
+void parseWifiSetupOverHTTP() {
+
+}
