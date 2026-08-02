@@ -12,7 +12,7 @@ void setup()
 {
   Serial.begin(115200);
 
-  //saveWifiConfig("MyWifi", "MyPass"); // initial wifi setup
+  //saveWifiConfig("UPCD22662E", "hTxwhrv3J4sc"); // initial wifi setup
 
   loadWifiConfig();
 
@@ -24,7 +24,7 @@ void setup()
 
   getStatus();
 
-  delay(1000);
+  delay(300);
 }
 
 // ---------------- LOOP ----------------
@@ -36,11 +36,11 @@ unsigned long cmdStatusInfoCooloff = 0;
 
 void loop()
 {
-  if (!isUIUsingWifi()){
-    checkWifiConnection();
+  if (!isUIUsingWifi()){ }
 
-    parseTCPCommands();
-  }
+  checkWifiConnection();
+
+  parseTCPCommands();
 
   extern bool throttleLocked;
   if (throttleLocked) {
@@ -53,8 +53,6 @@ void loop()
   getZ21Commands();
 
   drawUI();
-
-  if (isUIUsingWifi()) return;
 
   // should set speed and functions
   extern uint16_t locoAddr;

@@ -27,6 +27,8 @@ void drawUIWifiSetup();
 void drawUIWifiInfo();
 void showUIKeysTest();
 
+void drawUISetupWifi();
+
 void loopUILocked();
 
 bool isUIUsingWifi();

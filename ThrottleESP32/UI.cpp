@@ -6,6 +6,8 @@
 #include <Adafruit_GFX.h>
 #include <Adafruit_PCD8544.h>
 #include "TCPCommands.h"
+#include "HTTPCommands.h"
+#include <WiFi.h>
 
 // display object (software SPI)
 Adafruit_PCD8544 display(LCD_CLK, LCD_DIN, LCD_DC, LCD_CE, LCD_RST);
@@ -91,8 +93,13 @@ char scanKeypad()
 void setupUI() {
   display.begin();
 
-  // contrast (ajusteaza daca e prea intunecat / luminos)
+  // contrast (ajusteaza daca e prea intunecat / luminos
+#ifdef ESP32_NODE
   display.setRotation(2); // rotit 180 grade
+#else
+  //display.setRotation(2); // rotit 180 grade
+#endif
+
   display.setContrast(90);
   display.invertDisplay(false);
 
@@ -321,6 +328,30 @@ void drawUIFunctions() {
   }
 }
 
+void drawUISetupWifi() {
+  display.clearDisplay();
+  display.setTextColor(BLACK, WHITE);
+
+  display.setTextSize(1);
+  display.setCursor(0, 0);
+  display.print(String("S:") + AP_MODE_SSID);
+  display.setCursor(0, 10);
+  display.print(String("P:") + AP_MODE_PASS);
+  display.setCursor(0, 20);
+  IPAddress ip = WiFi.softAPIP();
+  display.print(ip[0]);
+  display.print(".");
+  display.print(ip[1]);
+  display.print(".");
+  display.print(ip[2]);
+  display.print(".");
+  display.print(ip[3]);
+  display.setCursor(0, 40);
+  display.print("* EXIT");
+
+  display.display();
+}
+
 void drawUIMenu() {  
   display.clearDisplay();
   display.setTextColor(BLACK, WHITE);
@@ -329,7 +360,7 @@ void drawUIMenu() {
   display.setCursor(0, 0);
   display.print("1 LOK ADDRESS");
   display.setCursor(0, 10);
-  display.print("2 WIFI");
+  display.print("2 WIFI INFO");
   display.setCursor(0, 20);
   display.print("3 SET WIFI");
   display.setCursor(0, 40);
@@ -434,22 +465,22 @@ void drawUIWifiInfo() {
   display.display();
 }
 
-void drawUIWifiSetup(){
-  if (wifiSelectCoolOff > millis()) return;
-  wifiSelectCoolOff = millis() + 500;
+// void drawUIWifiSetup(){
+//   if (wifiSelectCoolOff > millis()) return;
+//   wifiSelectCoolOff = millis() + 500;
 
-  display.clearDisplay();
-  display.setTextColor(BLACK, WHITE);
-  display.setTextSize(1);
-  display.setCursor(0, 0);
-  display.print(APModeSSID);    
-  display.setCursor(0, 10);
-  display.print(APModePass); 
-  display.setCursor(0, 40);
-  display.print("* OK");
+//   display.clearDisplay();
+//   display.setTextColor(BLACK, WHITE);
+//   display.setTextSize(1);
+//   display.setCursor(0, 0);
+//   display.print(APModeSSID);    
+//   display.setCursor(0, 10);
+//   display.print(APModePass); 
+//   display.setCursor(0, 40);
+//   display.print("* OK");
 
-  display.display();
-}
+//   display.display();
+// }
 
 int8_t keyToIndex(char k) {
   if (k >= '0' && k <= '9')
@@ -486,12 +517,11 @@ void onShortKeyPress(char k){
         uiState = UI_LOK_ADDRESS;
         tempLocoAddress = 0;
       }
-      else if (k == '2') uiState = UI_WIFI_INFO;
+      else if (k == '2') {
+        uiState = UI_WIFI_INFO;
+      }
       else if (k == '3') {
         uiState = UI_WIFI_SETUP;
-
-        // start HTTP server, put wifi in AP MODE
-        startWifiSetupOverHTTP();
       }
       else if (k == '*') uiState = UI_THROTTLE;
       break;
@@ -520,6 +550,7 @@ void onShortKeyPress(char k){
       break;
   }
 }
+
 void onLongKeyPress(char k) {
   Serial.print("LONG PRESS: ");
   Serial.println(k);
@@ -570,11 +601,38 @@ void drawUI() {
     case UI_MENU: drawUIMenu(); break;
     case UI_LOK_ADDRESS: drawUILokAddress(); break;
     case UI_WIFI_INFO: drawUIWifiInfo(); break;
-    case UI_WIFI_SETUP: drawUIWifiSelect(); break;
+    //case UI_WIFI_SETUP: drawUIWifiSelect(); break;
     default: //UI_THROTTLE
       drawUIThrottle();
       break;
   }
+
+  //Wifi setup over HTTP
+  if (uiState == UI_WIFI_SETUP) {  
+    display.clearDisplay();
+    display.setTextColor(BLACK, WHITE);
+
+    display.setTextSize(1);
+    display.setCursor(0, 0);
+    display.print("AP MODE...");
+    display.display();
+
+    // setup the UI
+    startWifiSetupOverHTTP();
+
+    // draw UI SETUP
+    drawUISetupWifi();
+
+    // forever loop HTTP commands
+    while(uiState == UI_WIFI_SETUP) {
+      parseKeyPress();
+      parseWifiSetupOverHTTP();
+    }
+
+    ESP.restart();
+  }
+
+
 }
 
 

@@ -127,7 +127,7 @@ void loadWifiConfig()
   prefs.end();
 }
 
-void saveWifiConfig(const char* newSsid, const char* newPass)
+void saveWifiConfig(String newSsid, String newPass)
 {
   extern char ssid[33];
   extern char password[65];
@@ -142,8 +142,11 @@ void saveWifiConfig(const char* newSsid, const char* newPass)
   memset(ssid, 0, sizeof(ssid));
   memset(password, 0, sizeof(password));
   
-  strncpy(ssid, newSsid, sizeof(newSsid) - 1);
-  strncpy(password, newPass, sizeof(newPass) - 1);
+  strncpy(ssid, newSsid.c_str(), sizeof(ssid) - 1);
+  strncpy(password, newPass.c_str(), sizeof(password) - 1);
+
+  ssid[sizeof(ssid) - 1] = '\0';
+  password[sizeof(password) - 1] = '\0';
 
   prefs.end();
 }

@@ -5,7 +5,4 @@ void setupTCPCommmands();
 void parseTCPCommands();
 void parseTCPLocoAddress();
 
-void startWifiSetupOverHTTP();
-void parseWifiSetupOverHTTP();
-
 #endif

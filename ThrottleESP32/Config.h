@@ -3,23 +3,46 @@
 #include <WiFi.h>
 #include <WiFiUdp.h>
 
-#define LCD_RST   22
-#define LCD_CE    21
-#define LCD_DC    19
-#define LCD_DIN   18
-#define LCD_CLK    5
+#define ESP32_NODE
+//#define ESP32_D1MINI_S2 
 
-#define POT_PIN   34
-#define PWR_PIN   35
+#ifdef ESP32_NODE
+  #define LCD_RST   22
+  #define LCD_CE    21
+  #define LCD_DC    19
+  #define LCD_DIN   18
+  #define LCD_CLK    5
+  #define POT_PIN   34
+  #define PWR_PIN   35
+    
+  // C2 R1 C1 R4 C3 R3 R2
+  #define COL1      27
+  #define COL2      12
+  #define COL3      25
+  #define ROW1      14
+  #define ROW2      32
+  #define ROW3      33
+  #define ROW4      26
+#else
+  #define LCD_RST   1
+  #define LCD_CE    2
+  #define LCD_DC    4
+  #define LCD_DIN   6
+  #define LCD_CLK   38
+  #define POT_PIN   14
+  #define PWR_PIN   40
 
-// C2 R1 C1 R4 C3 R3 R2
-#define COL1      27
-#define COL2      12
-#define COL3      25
-#define ROW1      14
-#define ROW2      32
-#define ROW3      33
-#define ROW4      26
+  #define COL1      34
+  #define COL2      17
+  #define COL3       8
+  #define ROW1      21
+  #define ROW2      13
+  #define ROW3      10
+  #define ROW4      36
+#endif
+
+
+
 
 #define LOK_FORWARD  1
 #define LOK_STOP     0
@@ -32,6 +55,7 @@
 #define TRACK_SHORT 8 
 
 #define TCP_COMMANDS_PORT 8983
+#define HTTP_COMMANDS_PORT 80
 
 enum WifiState
 {
@@ -46,7 +70,8 @@ enum WifiState
 
 extern WifiState wifiState;
 
-#define AP_MODE_SSID "ESP_CFRP_Throttle"
+#define AP_MODE_SSID "ESP32_CFRP"
+#define AP_MODE_PASS "CFRPa55ing"
 
 extern char ssid[33];
 extern char password[65];
