@@ -13,8 +13,8 @@
 Adafruit_PCD8544 display(LCD_CLK, LCD_DIN, LCD_DC, LCD_CE, LCD_RST);
 uint8_t uiState = UI_THROTTLE;
 
-String APModeSSID;
-String APModePass;
+// String APModeSSID;
+// String APModePass;
 
 const char keys[4][3] = {
   {'1','2','3'},
@@ -170,6 +170,8 @@ void parseKeyPress() {
   if (-10 < speed && speed < 10) {
     locoSpeed = 0;
     locoDirection = LOK_STOP;
+    if (speed < 0) locoDirection = LOK_FORWARD;
+    else locoDirection = LOK_REVERSE;
   }
   else if (speed < 0){ // this is actually forward
     locoSpeed = -speed;
