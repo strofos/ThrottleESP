@@ -20,8 +20,9 @@ public class MainForm : Form
     public MainForm()
     {
         Text = "ESP32 ThrottleMaus Manager";
-        Width = 1000;
+        Width = 1080;
         Height = 560;
+        this.ClientSize = new System.Drawing.Size(1080, 560);
 
         clockLabel.Dock = DockStyle.Top;
         clockLabel.Height = 42;
@@ -192,7 +193,7 @@ public class MainForm : Form
             while (p.Length < 5)
                 p = p.Append("").ToArray();
 
-            grid.Rows.Add(p[0], p[1], p[2], p[3], p[4]);
+            grid.Rows.Add(p[0], p[1], p[2], null, null);
         }
     }
 
