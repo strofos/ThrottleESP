@@ -3,8 +3,8 @@
 #include <WiFi.h>
 #include <WiFiUdp.h>
 
-#define ESP32_NODE
-//#define ESP32_D1MINI_S2 
+//#define ESP32_NODE
+#define ESP32_D1MINI_S2 
 
 #ifdef ESP32_NODE
   #define LCD_RST   22
@@ -13,7 +13,6 @@
   #define LCD_DIN   18
   #define LCD_CLK    5
   #define POT_PIN   34
-  #define PWR_PIN   35
     
   // C2 R1 C1 R4 C3 R3 R2
   #define COL1      27
@@ -29,8 +28,8 @@
   #define LCD_DC    4
   #define LCD_DIN   6
   #define LCD_CLK   38
+  #define LCD_BL    40
   #define POT_PIN   14
-  #define PWR_PIN   40
 
   #define COL1      34
   #define COL2      17

@@ -11,6 +11,13 @@
 void setup()
 {
   Serial.begin(115200);
+  delay(300);
+
+#ifdef ESP32_NODE
+  Serial.println("ESP32_NODE Board");
+#else 
+  Serial.println("Mini S2 Board");
+#endif
 
   //saveWifiConfig("UPCD22662E", "hTxwhrv3J4sc"); // initial wifi setup
 
@@ -24,7 +31,10 @@ void setup()
 
   getStatus();
 
-  delay(300);
+  //delay(300);
+
+  //Serial.println("Setup done");
+  //Serial.flush();
 }
 
 // ---------------- LOOP ----------------

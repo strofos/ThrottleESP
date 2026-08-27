@@ -91,13 +91,15 @@ char scanKeypad()
 
 
 void setupUI() {
+  pinMode(LCD_BL, OUTPUT);
+  digitalWrite(LCD_BL, LOW);
   display.begin();
 
   // contrast (ajusteaza daca e prea intunecat / luminos
 #ifdef ESP32_NODE
   display.setRotation(2); // rotit 180 grade
 #else
-  //display.setRotation(2); // rotit 180 grade
+  display.setRotation(2); // rotit 180 grade
 #endif
 
   display.setContrast(90);
